@@ -2,7 +2,6 @@
 
 use App\Models\Job;
 use App\Models\User;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Route;
 use Laravel\Socialite\Facades\Socialite;
 
@@ -58,7 +57,7 @@ Route::get('/job', function() {
             'jobs' => Job::all()
         ]
     );
-})->name("contact");
+})->name("job");
 
 Route::get('job/{id}', function ($id) {
     $job = Job::find($id);
