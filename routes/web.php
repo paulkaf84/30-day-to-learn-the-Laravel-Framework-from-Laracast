@@ -54,7 +54,7 @@ Route::get('/job', function() {
     return view(
         'contact',
         [
-            'jobs' => Job::with("employer")->get()
+            'jobs' => Job::with("employer")->paginate(20)
         ]
     );
 })->name("job");
