@@ -81,7 +81,11 @@
                                 </button>
                             @else
                                 <span class="inline-flex rounded-md">
-                                    <img src="{{ Auth::user()->profile_photo_path }}" alt="avatar" class="w-8 h-8 rounded-full">
+                                    @if(Auth::user()->profile_photo_path)
+                                        <img src="{{ Auth::user()->profile_photo_path }}" alt="avatar" class="w-8 h-8 rounded-full">
+                                    @else
+                                        <div class="inline-flex items-center w-8 h-8 p-2 bg-blue-200 rounded-full text-center"><span class="text-blue-900">{{ \Illuminate\Support\Str::substr(Auth::user()->name, 0, 2) }}</span></div>
+                                    @endif
                                     <button type="button" class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none focus:bg-gray-50 active:bg-gray-50 transition ease-in-out duration-150">
                                         {{ Auth::user()->name }}
 
