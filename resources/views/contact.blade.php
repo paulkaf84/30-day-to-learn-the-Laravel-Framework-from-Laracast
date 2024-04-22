@@ -1,5 +1,6 @@
 <x-layout>
     <x-slot:heading>Contact</x-slot:heading>
+    <x-slot:title>Contact</x-slot:title>
     <h1 class="text-xl mb-4">This is the Job page</h1>
     <h2>Displaying {{ $jobs->count() }} {{ "job" ? $jobs->count() == 1 || $jobs->count() == 0: "jobs" }}</h2>
     <div class="space-y-4">

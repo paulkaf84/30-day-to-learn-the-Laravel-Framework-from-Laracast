@@ -1,7 +1,9 @@
 <?php
 
+use App\Models\Employer;
 use App\Models\Job;
 use App\Models\User;
+use Illuminate\Foundation\Http\Middleware\HandlePrecognitiveRequests;
 use Illuminate\Support\Facades\Route;
 use Laravel\Socialite\Facades\Socialite;
 
@@ -58,6 +60,22 @@ Route::get('/job', function() {
         ]
     );
 })->name("job");
+
+Route::get('/jobs/create', function () {
+    return view('jobs.create');
+})->name("jobs.create");
+
+Route::post('/jobs/store', function (\App\Http\Requests\JobRequest $jobRequest) {
+    $job = $jobRequest->validated();
+
+    Job::create([
+        'title' => $job['title'],
+        'salary' => $job['salary'],
+        'employer_id' => Employer::firstOrCreate()->id,
+    ]);
+    return redirect(\route('job'));
+})/*->middleware([HandlePrecognitiveRequests::class])*/
+->name("jobs.store");
 
 Route::get('job/{id}', function ($id) {
     $job = Job::find($id);

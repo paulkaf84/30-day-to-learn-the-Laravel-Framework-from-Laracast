@@ -6,7 +6,8 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <title>Contact</title>
+    <title>{{ $title }}</title>
+    @vite(['resources/js/app.js'])
 </head>
 <body class="h-full">
 
@@ -56,8 +57,10 @@
                                     <button type="button" class="relative flex max-w-xs items-center rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800" id="user-menu-button" aria-expanded="false" aria-haspopup="true">
                                         <span class="absolute -inset-1.5"></span>
                                         <span class="sr-only">Open user menu</span>
-                                        <img class="h-8 w-8 rounded-full" src="{{ \Illuminate\Support\Facades\Auth::user()->profile_photo_path }}" alt="">
-                                    </button>
+                                        @auth()
+                                            <img class="h-8 w-8 rounded-full" src="{{ \Illuminate\Support\Facades\Auth::user()->profile_photo_path }}" alt="">
+                                        @endauth
+                                        </button>
                                 </div>
                             </div>
                         </div>
@@ -99,6 +102,7 @@
                         'text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium' => !request()->routeIs('job'),
                     ]) aria-current="page">Job</x-nav-laracast>
                 </div>
+                @auth()
                 <div class="border-t border-gray-700 pb-3 pt-4">
                     <div class="flex items-center px-5">
                         <div class="flex-shrink-0">
@@ -117,12 +121,15 @@
                         </button>
                     </div>
                 </div>
+            @endauth
             </div>
         </nav>
 
         <header class="bg-white shadow">
-            <div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+            <div class="mx-auto flex justify-between px-4 py-6 sm:px-6 lg:px-8">
                 <h1 class="text-3xl font-bold tracking-tight text-gray-900">{{ $heading }}</h1>
+
+                <x-buton :href="route('jobs.create')">Create Job</x-buton>
             </div>
         </header>
         <main>
