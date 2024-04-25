@@ -9,7 +9,10 @@ use Laravel\Socialite\Facades\Socialite;
 
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('jobs',
+        [
+            'jobs' => Job::with("employer")->orderByDesc(column: 'updated_at')->paginate(20)
+        ]);
 })->name("home");
 
 Route::middleware([
@@ -52,14 +55,14 @@ Route::get('/about', function() {
     return view('about');
 })->name("about");
 
-Route::get('/job', function() {
+Route::get('/jobs', function() {
     return view(
-        'contact',
+        'jobs',
         [
-            'jobs' => Job::with("employer")->paginate(20)
+            'jobs' => Job::with("employer")->orderByDesc(column: 'updated_at')->paginate(20)
         ]
     );
-})->name("job");
+})->name("jobs.index");
 
 Route::get('/jobs/create', function () {
     return view('jobs.create');
@@ -73,12 +76,38 @@ Route::post('/jobs/store', function (\App\Http\Requests\JobRequest $jobRequest) 
         'salary' => $job['salary'],
         'employer_id' => Employer::firstOrCreate()->id,
     ]);
-    return redirect(\route('job'));
+    return redirect(\route('jobs.index'));
 })/*->middleware([HandlePrecognitiveRequests::class])*/
 ->name("jobs.store");
 
+Route::patch('/jobs/{id}', function (\App\Http\Requests\JobRequest $jobRequest, $id) {
+    $job = $jobRequest->validated();
+
+
+    Job::findOrFail($id)->update([
+        'title' => $job['title'],
+        'salary' => $job['salary'],
+    ]);
+    return redirect(route('jobs.show', ['id' => $id]));
+})/*->middleware([HandlePrecognitiveRequests::class])*/
+->name("jobs.update");
+
+
+Route::delete('/jobs/{id}', function ($id) {
+    Job::findOrFail($id)->delete();
+    return redirect(route('jobs.index'));
+})
+->name("jobs.destroy");
+
 Route::get('job/{id}', function ($id) {
     $job = Job::find($id);
+//    dd($job);
 
     return view('jobs.show', ['job' => $job]);
-})->name('job.show');
+})->name('jobs.show');
+
+Route::get('job/{id}/edit', function ($id) {
+    $job = Job::find($id);
+
+    return view('jobs.edit', ['job' => $job]);
+})->name('jobs.edit');

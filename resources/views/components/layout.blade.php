@@ -6,6 +6,7 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
     <title>{{ $title }}</title>
     @vite(['resources/js/app.js'])
 </head>
@@ -23,7 +24,6 @@
                         </div>
                         <div class="hidden md:block">
                             <div class="ml-10 flex items-baseline space-x-4">
-                                <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
                                 <x-nav-laracast href="/" @class([
                                     'bg-gray-900 text-white rounded-md px-3 py-2 text-sm font-medium' => request()->routeIs('home'),
                                     'text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium' => !request()->routeIs('home'),
@@ -34,9 +34,9 @@
                                     'text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium' => !request()->routeIs('about'),
                                 ])>About</x-nav-laracast>
 
-                                <x-nav-laracast href="/job" @class([
-                                    'bg-gray-900 text-white rounded-md px-3 py-2 text-sm font-medium' => request()->routeIs('job'),
-                                    'text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium' => !request()->routeIs('job'),
+                                <x-nav-laracast :href="route('jobs.index')" @class([
+                                    'bg-gray-900 text-white rounded-md px-3 py-2 text-sm font-medium' => request()->routeIs('jobs.index'),
+                                    'text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium' => !request()->routeIs('jobs.index'),
                                 ])>Job</x-nav-laracast>
                             </div>
                         </div>
@@ -97,9 +97,9 @@
                         'text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium' => !request()->routeIs('about'),
                     ]) aria-current="page">About</x-nav-laracast>
 
-                    <x-nav-laracast href="/job" @class([
-                        'bg-gray-900 text-white block rounded-md px-3 py-2 text-base font-medium' => request()->routeIs('job'),
-                        'text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium' => !request()->routeIs('job'),
+                    <x-nav-laracast :href="route('jobs.index')" @class([
+                        'bg-gray-900 text-white block rounded-md px-3 py-2 text-base font-medium' => request()->routeIs('jobs.index'),
+                        'text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium' => !request()->routeIs('jobs.index'),
                     ]) aria-current="page">Job</x-nav-laracast>
                 </div>
                 @auth()
@@ -126,15 +126,14 @@
         </nav>
 
         <header class="bg-white shadow">
-            <div class="mx-auto flex justify-between px-4 py-6 sm:px-6 lg:px-8">
-                <h1 class="text-3xl font-bold tracking-tight text-gray-900">{{ $heading }}</h1>
+            <div class="mx-auto max-w-7xl flex justify-between py-6 sm:px-6 lg:px-8">
+                <h1 class="text-3xl font-bold  text-gray-900">{{ $heading }}</h1>
 
                 <x-buton :href="route('jobs.create')">Create Job</x-buton>
             </div>
         </header>
         <main>
             <div class="mx-auto max-w-7xl py-6 sm:px-6 lg:px-8">
-                <!-- Your content -->
                 {{ $slot }}
             </div>
         </main>
