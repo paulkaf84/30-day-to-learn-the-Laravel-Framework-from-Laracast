@@ -9,12 +9,11 @@ use Illuminate\Support\Facades\Route;
 use Laravel\Socialite\Facades\Socialite;
 
 
-Route::get('/', function () {
-    return view('jobs',
-        [
-            'jobs' => Job::with("employer")->orderByDesc(column: 'updated_at')->paginate(20)
-        ]);
-})->name("home");
+Route::view('/', 'jobs',
+    [
+        'jobs' => Job::with("employer")->orderByDesc(column: 'updated_at')->paginate(20)
+    ]
+)->name("home");
 
 Route::middleware([
     'auth:sanctum',
