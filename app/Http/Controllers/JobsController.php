@@ -13,7 +13,7 @@ class JobsController extends Controller
         return view(
             'jobs',
             [
-                'jobs' => Job::with("employer")->orderByDesc(column: 'updated_at')->paginate(20)
+                'jobs' => Job::with('employer')->orderByDesc(column: 'updated_at')->paginate(20),
             ]
         );
     }
@@ -32,6 +32,7 @@ class JobsController extends Controller
             'salary' => $job['salary'],
             'employer_id' => Employer::firstOrCreate()->id,
         ]);
+
         return redirect(route('jobs.index'));
     }
 
@@ -52,13 +53,14 @@ class JobsController extends Controller
             'title' => $updated['title'],
             'salary' => $updated['salary'],
         ]);
+
         return redirect(route('jobs.show', $job));
     }
 
     public function destroy(Job $job)
     {
         $job->delete();
+
         return redirect(route('jobs.index'));
     }
 }
-

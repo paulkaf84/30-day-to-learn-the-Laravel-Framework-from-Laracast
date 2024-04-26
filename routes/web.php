@@ -1,19 +1,16 @@
 <?php
 
 use App\Http\Controllers\JobsController;
-use App\Models\Employer;
 use App\Models\Job;
 use App\Models\User;
-use Illuminate\Foundation\Http\Middleware\HandlePrecognitiveRequests;
 use Illuminate\Support\Facades\Route;
 use Laravel\Socialite\Facades\Socialite;
 
-
 Route::view('/', 'jobs',
     [
-        'jobs' => Job::with("employer")->orderByDesc(column: 'updated_at')->paginate(20)
+        'jobs' => Job::with('employer')->orderByDesc(column: 'updated_at')->paginate(20),
     ]
-)->name("home");
+)->name('home');
 
 Route::middleware([
     'auth:sanctum',
