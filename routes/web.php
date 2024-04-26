@@ -50,18 +50,4 @@ Route::get('/auth/{provider}/callback', function ($provider) {
     return redirect('/dashboard');
 });
 
-//LARACAST LEARNING PATH
-
-Route::get('/jobs', [JobsController::class, 'index'])->name("jobs.index");
-
-Route::get('/jobs/create', [JobsController::class, 'create'])->name("jobs.create");
-
-Route::post('/jobs/store', [JobsController::class, 'store'])->name("jobs.store");
-
-Route::patch('/jobs/{job}', [JobsController::class, 'update'])->name("jobs.update");
-
-Route::delete('/jobs/{job}', [JobsController::class, 'destroy'])->name("jobs.destroy");
-
-Route::get('jobs/{job}', [JobsController::class, 'show'])->name('jobs.show');
-
-Route::get('jobs/{job}/edit', [JobsController::class, 'edit'])->name('jobs.edit');
+Route::resource('jobs', JobsController::class);
