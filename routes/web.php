@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\JobsController;
 use App\Models\Employer;
 use App\Models\Job;
 use App\Models\User;
@@ -51,63 +52,16 @@ Route::get('/auth/{provider}/callback', function ($provider) {
 
 //LARACAST LEARNING PATH
 
-Route::get('/about', function() {
-    return view('about');
-})->name("about");
+Route::get('/jobs', [JobsController::class, 'index'])->name("jobs.index");
 
-Route::get('/jobs', function() {
-    return view(
-        'jobs',
-        [
-            'jobs' => Job::with("employer")->orderByDesc(column: 'updated_at')->paginate(20)
-        ]
-    );
-})->name("jobs.index");
+Route::get('/jobs/create', [JobsController::class, 'create'])->name("jobs.create");
 
-Route::get('/jobs/create', function () {
-    return view('jobs.create');
-})->name("jobs.create");
+Route::post('/jobs/store', [JobsController::class, 'store'])->name("jobs.store");
 
-Route::post('/jobs/store', function (\App\Http\Requests\JobRequest $jobRequest) {
-    $job = $jobRequest->validated();
+Route::patch('/jobs/{job}', [JobsController::class, 'update'])->name("jobs.update");
 
-    Job::create([
-        'title' => $job['title'],
-        'salary' => $job['salary'],
-        'employer_id' => Employer::firstOrCreate()->id,
-    ]);
-    return redirect(\route('jobs.index'));
-})/*->middleware([HandlePrecognitiveRequests::class])*/
-->name("jobs.store");
+Route::delete('/jobs/{job}', [JobsController::class, 'destroy'])->name("jobs.destroy");
 
-Route::patch('/jobs/{id}', function (\App\Http\Requests\JobRequest $jobRequest, $id) {
-    $job = $jobRequest->validated();
+Route::get('jobs/{job}', [JobsController::class, 'show'])->name('jobs.show');
 
-
-    Job::findOrFail($id)->update([
-        'title' => $job['title'],
-        'salary' => $job['salary'],
-    ]);
-    return redirect(route('jobs.show', ['id' => $id]));
-})/*->middleware([HandlePrecognitiveRequests::class])*/
-->name("jobs.update");
-
-
-Route::delete('/jobs/{id}', function ($id) {
-    Job::findOrFail($id)->delete();
-    return redirect(route('jobs.index'));
-})
-->name("jobs.destroy");
-
-Route::get('job/{id}', function ($id) {
-    $job = Job::find($id);
-//    dd($job);
-
-    return view('jobs.show', ['job' => $job]);
-})->name('jobs.show');
-
-Route::get('job/{id}/edit', function ($id) {
-    $job = Job::find($id);
-
-    return view('jobs.edit', ['job' => $job]);
-})->name('jobs.edit');
+Route::get('jobs/{job}/edit', [JobsController::class, 'edit'])->name('jobs.edit');
