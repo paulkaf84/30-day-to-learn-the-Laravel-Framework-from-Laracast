@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\JobsController;
+use App\Http\Requests\UserRegisterRequest;
 use App\Models\Job;
 use App\Models\User;
 use Illuminate\Support\Facades\Route;
@@ -47,3 +49,16 @@ Route::get('/auth/{provider}/callback', function ($provider) {
 });
 
 Route::resource('jobs', JobsController::class);
+
+
+// CUSTOM AUTH
+
+Route::prefix('auth-v1')->group(function () {
+    Route::view('login', 'auth-v1.login')->name('auth-v1.login-view');
+    Route::post('login', [AuthController::class, 'login'])->name('auth-v1.login');
+
+    Route::view('register', 'auth-v1.register')->name('auth-v1.register-view');
+    Route::post('register', [AuthController::class, 'register'])->name('auth-v1.register');
+
+    Route::post('logout', [AuthController::class, 'destroy'])->name('auth-v1.logout');
+});

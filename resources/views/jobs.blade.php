@@ -6,7 +6,7 @@
     <div class="space-y-4">
 
         @foreach($jobs as $job)
-            <a class="" href="{{ route('jobs.show', $job) }}">
+            <a href="{{ route('jobs.show', $job) }}">
                 <div class="flex justify-between items-center group border border-gray-200 px-4 py-6 rounded-lg hover:bg-gray-200">
 
                     <div>
